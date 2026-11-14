@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lost &amp; Found</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f3f6fa;--card:#fff;--ink:#0f2a43;--mut:#5b6f84;--line:#d6dfe9;--acc:#f2b705;--accink:#3a2c00;--lost:#c2410c;--found:#0f766e;--ok:#15803d;--bad:#b91c1c;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b1623;--card:#13263a;--ink:#e8f0f8;--mut:#93a7bb;--line:#26405a;--acc:#f2b705;--lost:#fb923c;--found:#2dd4bf;--ok:#4ade80;--bad:#f87171;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0b1623;--card:#13263a;--ink:#e8f0f8;--mut:#93a7bb;--line:#26405a;--lost:#fb923c;--found:#2dd4bf;--ok:#4ade80;--bad:#f87171;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Bricolage Grotesque",system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.5}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1040px;margin:0 auto;padding:0 18px}
+header{background:var(--ink);color:#fff}
+header .wrap{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:12px 18px}
+.logo{font-weight:800;font-size:20px;margin-right:auto;display:flex;align-items:center;gap:8px}
+.logo i{width:26px;height:26px;border-radius:7px 7px 7px 2px;background:var(--acc);display:inline-block;position:relative}
+.logo i::after{content:"";position:absolute;left:8px;top:8px;width:8px;height:8px;border-radius:50%;background:var(--ink)}
+nav a{padding:6px 12px;border-radius:99px;font-weight:600;font-size:14px;opacity:.85}
+nav a.on,nav a:hover{background:rgba(255,255,255,.14);opacity:1}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+h1{font-size:clamp(32px,6vw,56px);line-height:1.05;margin:0 0 12px;font-weight:800;letter-spacing:-.02em}
+h2{font-size:24px;margin:28px 0 12px}
+.hero{background:var(--ink);color:#fff;padding:36px 0 56px}
+.hero p{max-width:520px;opacity:.85;font-size:18px;margin:0 0 20px}
+.sbar{display:flex;gap:8px;max-width:560px}
+.sbar input{flex:1}
+input,select,textarea{font:inherit;color:var(--ink);background:var(--card);border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;width:100%}
+textarea{min-height:90px;resize:vertical}
+label{display:block;font-weight:600;font-size:14px;margin:12px 0 4px}
+.btn{font:inherit;font-weight:700;border:0;border-radius:10px;padding:10px 18px;cursor:pointer;background:var(--acc);color:var(--accink);display:inline-block;text-align:center}
+.btn.alt{background:transparent;color:inherit;border:1.5px solid currentColor}
+.btn.sm{padding:5px 12px;font-size:13px}
+.btn.ok{background:var(--ok);color:#fff}.btn.bad{background:var(--bad);color:#fff}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-top:-34px}
+.stat{background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:14px 16px}
+.stat b{font-size:30px;display:block;line-height:1.1}.stat span{color:var(--mut);font-size:14px}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.step{border-left:5px solid var(--acc);background:var(--card);padding:12px 16px;border-radius:4px 12px 12px 4px}
+.step b{display:block}.step span{color:var(--mut);font-size:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
+.tag{background:var(--card);border:1.5px solid var(--line);border-radius:14px 14px 14px 4px;padding:16px 16px 14px;position:relative;display:block}
+.tag::before{content:"";position:absolute;right:14px;top:12px;width:10px;height:10px;border-radius:50%;border:2px solid var(--line);background:var(--bg)}
+.tag:hover{border-color:var(--acc)}
+.em{font-size:34px}
+.tag h3{margin:6px 0 4px;font-size:17px}
+.meta{color:var(--mut);font-size:13px}
+.pill{display:inline-block;font-size:12px;font-weight:700;border-radius:99px;padding:2px 10px;border:1.5px solid currentColor}
+.pill.lost{color:var(--lost)}.pill.found{color:var(--found)}.pill.pending{color:var(--mut)}.pill.returned{color:var(--ok)}.pill.new{color:var(--mut)}.pill.approved{color:var(--ok)}.pill.rejected{color:var(--bad)}
+.filters{display:grid;grid-template-columns:2fr repeat(4,1fr);gap:10px;margin:16px 0}
+@media(max-width:760px){.filters{grid-template-columns:1fr 1fr}.filters input{grid-column:1/-1}}
+.panel{background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:20px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:600px){.two{grid-template-columns:1fr}}
+.seg{display:flex;gap:8px}.seg label{flex:1;margin:0;border:1.5px solid var(--line);border-radius:10px;padding:10px;text-align:center;cursor:pointer}
+.seg input{display:none}.seg input:checked+span{font-weight:800}.seg label:has(input:checked){border-color:var(--acc);background:color-mix(in srgb,var(--acc) 22%,transparent)}
+.detail{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:700px){.detail{grid-template-columns:1fr}}
+.big{font-size:96px;text-align:center;background:var(--bg);border-radius:14px;padding:30px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:middle}
+.scroll{overflow-x:auto}
+.tabs{display:flex;gap:8px;margin:16px 0;flex-wrap:wrap}
+.err{color:var(--bad);font-size:13px;margin-top:4px}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 18px;border-radius:10px;font-weight:600;z-index:9}
+.empty{text-align:center;color:var(--mut);padding:40px 10px}
+footer{margin:48px 0 24px;color:var(--mut);font-size:13px;text-align:center}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+:root{--bg:#f6f6f3;--card:#fff;--ink:#1b1d21;--mut:#6a6f76;--line:#e1e1dc;--acc:#1f4fd8;--accink:#fff;--lost:#b4361b;--found:#0d7a5f}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#111316;--card:#191c20;--ink:#eceef0;--mut:#9aa0a8;--line:#2c3137;--acc:#7aa2ff;--accink:#0b1020;--lost:#ff8f70;--found:#4fd1a5}}
+body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+h1,h2,.logo{font-family:"Bricolage Grotesque",system-ui,sans-serif}
+header{background:var(--card);color:var(--ink);border-bottom:1px solid var(--line)}
+.logo{font-size:19px}.logo i{background:var(--acc)}.logo i::after{background:var(--card)}
+nav a{opacity:1;color:var(--mut);border-radius:0;padding:8px 10px}
+nav a:hover{background:none;color:var(--ink)}
+nav a.on{background:none;color:var(--ink);box-shadow:inset 0 -2px 0 var(--acc)}
+.hero{background:none;color:var(--ink);padding:36px 0 20px}
+h1{font-size:clamp(28px,5vw,40px);font-weight:700;letter-spacing:-.01em}
+.hero p{color:var(--mut);font-size:16px;opacity:1}
+h2{font-size:19px;margin:32px 0 12px}
+.btn{border-radius:6px;font-weight:600}
+input,select,textarea,.seg label{border-radius:6px;border-width:1px}
+.panel{border-radius:8px;border-width:1px}
+.stats{margin-top:8px;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--line);background:var(--card);border-radius:8px}
+.stats[style]{grid-template-columns:repeat(4,1fr)}
+.stat{border:0;border-right:1px solid var(--line);border-radius:0;background:none;padding:12px 14px}
+.stat:last-child{border-right:0}.stat b{font-size:26px}
+@media(max-width:560px){.stats[style]{grid-template-columns:repeat(2,1fr)}.stats[style] .stat:nth-child(2n){border-right:0}.stats[style] .stat:nth-child(-n+2){border-bottom:1px solid var(--line)}}
+.steps{counter-reset:s;gap:16px}
+.step{background:none;border:0;padding:0;border-radius:0}
+.step::before{counter-increment:s;content:counter(s);display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--ink);color:var(--card);font-size:12px;font-weight:700;margin-bottom:6px}
+.grid{display:block;border:1px solid var(--line);background:var(--card);border-radius:8px;overflow:hidden}
+.row{display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid var(--line)}
+.row:last-child{border-bottom:0}.row:hover{background:var(--bg)}
+.row>div{flex:1;min-width:0}.row h3{margin:0 0 2px;font-size:16px;font-weight:600}
+.bar{width:4px;align-self:stretch;border-radius:2px;background:var(--lost)}.bar.found{background:var(--found)}
+.pill{border:0;border-radius:4px;background:color-mix(in srgb,currentColor 12%,transparent);padding:2px 8px}
+.big{display:grid;place-items:center;min-height:200px;font-size:20px;font-weight:600;color:var(--mut);background:var(--card);border:1px dashed var(--line);border-radius:8px;padding:0}
+.toast{color:var(--bg)}
+</style></head><body>
+<header><div class="wrap"><a class="logo" href="#home"><i></i>Lost &amp; Found</a>
+<nav id="nav"><a href="#home" data-r="home">Home</a><a href="#items" data-r="items">Browse items</a><a href="#report" data-r="report">Report item</a><a href="#admin" data-r="admin">Admin</a></nav></div></header>
+<main id="app"></main>
+<footer>Campus lost &amp; found desk, Admin Block ground floor</footer>
+<script>
+const CATS={Electronics:"📱",Documents:"🪪",Bags:"🎒",Keys:"🔑",Books:"📚",Clothing:"🧥",Wallet:"👛",Other:"📦"};
+const LOCS=["Main Gate","Library","Admin Block","CS Block","Pharmacy Block","Boys Hostel","Girls Hostel","Canteen","Sports Ground","Auditorium"];
+const day=n=>{const d=new Date(Date.now()-n*864e5);return d.toISOString().slice(0,10)};
+const seed=[
+{id:1,type:"lost",title:"Black Boat earbuds case",cat:"Electronics",loc:"Library",date:day(1),desc:"Black case with a small scratch near the hinge. Left bud has a blue sticker.",contact:"Rahul · 98XXXXXX11",status:"open"},
+{id:2,type:"found",title:"Student ID card (B.Tech CSE)",cat:"Documents",loc:"CS Block",date:day(2),desc:"ID card found on the stairs. Handed over to the lost and found desk.",contact:"Desk, Admin Block",status:"open"},
+{id:3,type:"found",title:"Blue Wildcraft backpack",cat:"Bags",loc:"Canteen",date:day(3),desc:"Blue backpack with a notebook and a water bottle inside.",contact:"Canteen manager",status:"open"},
+{id:4,type:"lost",title:"Casio scientific calculator",cat:"Electronics",loc:"Pharmacy Block",date:day(4),desc:"fx-991ES Plus, name written in marker on the back.",contact:"Sana · 97XXXXXX42",status:"open"},
+{id:5,type:"found",title:"Hostel room keys with red tag",cat:"Keys",loc:"Boys Hostel",date:day(5),desc:"Three keys on a ring with a red tag.",contact:"Hostel warden office",status:"open"},
+{id:6,type:"lost",title:"Brown leather wallet",cat:"Wallet",loc:"Main Gate",date:day(6),desc:"Contains a library card and some cash.",contact:"Aman · 99XXXXXX08",status:"open"},
+{id:7,type:"found",title:"Grey hoodie",cat:"Clothing",loc:"Sports Ground",date:day(8),desc:"Size M, left near the cricket nets.",contact:"Sports office",status:"open"},
+{id:8,type:"lost",title:"DBMS textbook (Korth)",cat:"Books",loc:"Auditorium",date:day(9),desc:"Has my name on the first page.",contact:"Priya · 96XXXXXX70",status:"returned"}];
+let S;try{S=JSON.parse(localStorage.getItem("ilf1"))}catch(e){}
+if(!S||!S.items)S={items:seed,claims:[],admin:false};
+const save=()=>{try{localStorage.setItem("ilf1",JSON.stringify(S))}catch(e){}};
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const $=(s,r=document)=>r.querySelector(s);
+const app=$("#app");
+function toast(m){const t=document.createElement("div");t.className="toast";t.textContent=m;document.body.append(t);setTimeout(()=>t.remove(),2400)}
+const opts=(a,all)=>(all?`<option value="">${all}</option>`:"")+a.map(x=>`<option>${x}</option>`).join("");
+const card=i=>`<a class="row" href="#item-${i.id}"><span class="bar ${i.type}"></span><div><h3>${esc(i.title)}</h3><div class="meta">${esc(i.loc)} · ${esc(i.date)} · ${i.cat}</div></div><span class="pill ${i.status==="returned"?"returned":i.type}">${i.status==="returned"?"Returned":i.type==="lost"?"Lost":"Found"}</span></a>`;
+const pub=()=>S.items.filter(i=>i.status!=="pending");
+
+function home(){
+ const p=pub(),c=t=>p.filter(i=>i.type===t&&i.status==="open").length;
+ app.innerHTML=`<section class="hero"><div class="wrap"><h1>Lost or found something on campus?</h1><p>Check the list of items handed in at the desk, or report one yourself.</p>
+ <form class="sbar" id="hs"><input aria-label="Search items" placeholder="Search: wallet, ID card, keys…"><button class="btn">Search</button></form>
+ <p style="margin:16px 0 0"><a class="btn alt" href="#report">Report an item</a></p></div></section>
+ <div class="wrap"><div class="stats"><div class="stat"><b>${c("lost")}</b><span>Reported lost</span></div><div class="stat"><b>${c("found")}</b><span>Awaiting claim</span></div><div class="stat"><b>${p.filter(i=>i.status==="returned").length}</b><span>Returned</span></div></div>
+ <h2>How it works</h2><div class="steps"><div class="step"><b>Report</b><span>Fill the short form with what, where and when.</span></div><div class="step"><b>Match</b><span>Browse or search listings. Filter by place and category.</span></div><div class="step"><b>Claim</b><span>Answer a proof question. The admin verifies you.</span></div><div class="step"><b>Collect</b><span>Pick up with your ID card from the Admin Block desk.</span></div></div>
+ <h2>Latest items</h2><div class="grid">${p.slice().sort((a,b)=>b.id-a.id).slice(0,4).map(card).join("")}</div>
+ <p style="margin-top:16px"><a class="btn" href="#items">Browse all items</a></p></div>`;
+ $("#hs").onsubmit=e=>{e.preventDefault();window._q=$("#hs input").value;location.hash="items"};
+}
+
+function items(){
+ app.innerHTML=`<div class="wrap"><h2>Browse items</h2><div class="filters" role="search">
+ <input id="q" placeholder="Search title or description" aria-label="Search" value="${esc(window._q||"")}">
+ <select id="ft" aria-label="Type"><option value="">Lost + Found</option><option value="lost">Lost</option><option value="found">Found</option></select>
+ <select id="fc" aria-label="Category">${opts(Object.keys(CATS),"All categories")}</select>
+ <select id="fl" aria-label="Location">${opts(LOCS,"All locations")}</select>
+ <select id="fs" aria-label="Status"><option value="open">Open only</option><option value="">All statuses</option><option value="returned">Returned</option></select></div>
+ <div class="meta" id="cnt"></div><div class="grid" id="list"></div></div>`;
+ const run=()=>{const q=$("#q").value.toLowerCase(),t=$("#ft").value,c=$("#fc").value,l=$("#fl").value,s=$("#fs").value;
+  const r=pub().filter(i=>(!q||(i.title+i.desc).toLowerCase().includes(q))&&(!t||i.type===t)&&(!c||i.cat===c)&&(!l||i.loc===l)&&(!s||i.status===s)).sort((a,b)=>b.id-a.id);
+  $("#cnt").textContent=r.length+" item"+(r.length===1?"":"s")+" found";
+  $("#list").innerHTML=r.length?r.map(card).join(""):'<div class="empty" style="grid-column:1/-1">No items match. Clear a filter, or <a href="#report"><u>report your item</u></a>.</div>'};
+ app.querySelectorAll("input,select").forEach(e=>e.oninput=run);run();window._q="";
+}
+
+function report(){
+ app.innerHTML=`<div class="wrap" style="max-width:680px"><h2>Report an item</h2><form class="panel" id="rf" novalidate>
+ <div class="seg"><label><input type="radio" name="type" value="lost" checked><span>I lost something</span></label><label><input type="radio" name="type" value="found"><span>I found something</span></label></div>
+ <label for="t">Item name</label><input id="t" name="title" placeholder="e.g. Black wallet" required>
+ <div class="two"><div><label for="c">Category</label><select id="c" name="cat">${opts(Object.keys(CATS))}</select></div><div><label for="l">Location</label><select id="l" name="loc">${opts(LOCS)}</select></div></div>
+ <div class="two"><div><label for="d">Date</label><input id="d" type="date" name="date" required value="${day(0)}" max="${day(0)}"></div><div><label for="ct">Your contact</label><input id="ct" name="contact" placeholder="Name · phone" required></div></div>
+ <label for="ds">Description</label><textarea id="ds" name="desc" placeholder="Colour, brand, marks. Do not share secret details here for found items; keep them for verification."></textarea>
+ <div class="err" id="er"></div><p><button class="btn">Submit report</button></p><div class="meta">Reports appear on the site after admin approval.</div></form></div>`;
+ $("#rf").onsubmit=e=>{e.preventDefault();const f=new FormData(e.target),o=Object.fromEntries(f);
+  if(o.title.trim().length<3||o.contact.trim().length<5||!o.date){$("#er").textContent="Enter an item name (3+ letters), a date and a contact with a phone number.";return}
+  S.items.push({id:Math.max(0,...S.items.map(i=>i.id))+1,type:o.type,title:o.title.trim(),cat:o.cat,loc:o.loc,date:o.date,desc:o.desc.trim(),contact:o.contact.trim(),status:"pending"});save();
+  app.innerHTML=`<div class="wrap" style="max-width:680px"><div class="panel empty"><div class="em">✅</div><h2>Report submitted</h2><p>Admin will review it shortly. It will show in Browse items once approved.</p><a class="btn" href="#items">Browse items</a></div></div>`}
+}
+
+function detail(id){
+ const i=S.items.find(x=>x.id===id);if(!i||(i.status==="pending"&&!S.admin)){app.innerHTML='<div class="wrap empty">Item not found. <a href="#items"><u>Back to listings</u></a></div>';return}
+ app.innerHTML=`<div class="wrap"><p><a href="#items" class="meta">← All items</a></p><div class="detail"><div class="big">${i.cat}</div><div>
+ <span class="pill ${i.type}">${i.type==="lost"?"Lost":"Found"}</span> <span class="pill ${i.status}">${i.status}</span>
+ <h1 style="font-size:34px;margin-top:10px">${esc(i.title)}</h1>
+ <p>${esc(i.desc)||"No description added."}</p>
+ <table><tr><th>Category</th><td>${i.cat}</td></tr><tr><th>Location</th><td>${esc(i.loc)}</td></tr><tr><th>Date</th><td>${esc(i.date)}</td></tr><tr><th>Reported by</th><td>${esc(i.contact)}</td></tr></table>
+ <p>${i.status==="open"?`<a class="btn" href="#claim-${i.id}">${i.type==="found"?"This is mine, claim it":"I found this item"}</a>`:'<span class="meta">This item is not open for claims.</span>'}</p></div></div></div>`;
+}
+
+function claim(id){
+ const i=S.items.find(x=>x.id===id);if(!i||i.status!=="open"){app.innerHTML='<div class="wrap empty">This item is not open for claims. <a href="#items"><u>Browse items</u></a></div>';return}
+ const fnd=i.type==="found";
+ app.innerHTML=`<div class="wrap" style="max-width:680px"><p><a href="#item-${i.id}" class="meta">← Back to item</a></p><h2>${fnd?"Claim":"Respond to"}: ${esc(i.title)}</h2>
+ <form class="panel" id="cf" novalidate><div class="two"><div><label for="n">Full name</label><input id="n" name="name" required></div><div><label for="e">Enrollment no.</label><input id="e" name="enroll" required></div></div>
+ <label for="p">Phone</label><input id="p" name="phone" inputmode="tel" required>
+ <label for="pr">${fnd?"Proof of ownership":"Where and when did you find it?"}</label><textarea id="pr" name="proof" placeholder="${fnd?"Describe something only the owner knows: contents, marks, lock screen, serial no.":"Add details so the owner can be contacted."}"></textarea>
+ <div class="err" id="er"></div><p><button class="btn">Submit claim</button></p><div class="meta">Bring your university ID card to the Admin Block desk after approval.</div></form></div>`;
+ $("#cf").onsubmit=e=>{e.preventDefault();const o=Object.fromEntries(new FormData(e.target));
+  if(o.name.trim().length<2||o.enroll.trim().length<4||o.phone.replace(/\D/g,"").length<10||o.proof.trim().length<10){$("#er").textContent="Fill every field. Phone needs 10 digits and proof needs at least 10 characters.";return}
+  S.claims.push({id:Date.now(),itemId:i.id,...o,status:"new"});save();
+  app.innerHTML=`<div class="wrap" style="max-width:680px"><div class="panel empty"><div class="em">📨</div><h2>Claim sent</h2><p>Admin will verify your details and contact you on ${esc(o.phone)}.</p><a class="btn" href="#items">Back to items</a></div></div>`}
+}
+
+let tab="pending";
+function admin(){
+ if(!S.admin){app.innerHTML=`<div class="wrap" style="max-width:420px"><h2>Admin login</h2><form class="panel" id="af"><label for="pw">Password</label><input id="pw" type="password" autocomplete="off"><div class="err" id="er"></div><p><button class="btn">Log in</button></p><div class="meta">Demo password: admin123</div></form></div>`;
+  $("#af").onsubmit=e=>{e.preventDefault();if($("#pw").value==="admin123"){S.admin=true;save();admin()}else $("#er").textContent="Wrong password."};return}
+ const it=S.items,pend=it.filter(i=>i.status==="pending"),cl=S.claims,nm=id=>(it.find(i=>i.id===id)||{}).title||"Deleted item";
+ let body="";
+ if(tab==="pending")body=pend.length?`<div class="scroll"><table><tr><th>Item</th><th>Type</th><th>Location</th><th>By</th><th></th></tr>${pend.map(i=>`<tr><td><a href="#item-${i.id}"><u>${esc(i.title)}</u></a></td><td><span class="pill ${i.type}">${i.type}</span></td><td>${esc(i.loc)}</td><td>${esc(i.contact)}</td><td><button class="btn ok sm" data-a="ap" data-id="${i.id}">Approve</button> <button class="btn bad sm" data-a="del" data-id="${i.id}">Reject</button></td></tr>`).join("")}</table></div>`:'<div class="empty">No reports waiting for review.</div>';
+ if(tab==="claims")body=cl.length?`<div class="scroll"><table><tr><th>Item</th><th>Claimant</th><th>Proof</th><th>Status</th><th></th></tr>${cl.map(c=>`<tr><td>${esc(nm(c.itemId))}</td><td>${esc(c.name)}<br><span class="meta">${esc(c.enroll)} · ${esc(c.phone)}</span></td><td>${esc(c.proof)}</td><td><span class="pill ${c.status}">${c.status}</span></td><td>${c.status==="new"?`<button class="btn ok sm" data-a="ca" data-id="${c.id}">Approve</button> <button class="btn bad sm" data-a="cr" data-id="${c.id}">Reject</button>`:""}</td></tr>`).join("")}</table></div>`:'<div class="empty">No claims yet.</div>';
+ if(tab==="all")body=`<div class="scroll"><table><tr><th>Item</th><th>Type</th><th>Status</th><th></th></tr>${it.map(i=>`<tr><td><a href="#item-${i.id}"><u>${esc(i.title)}</u></a></td><td>${i.type}</td><td><span class="pill ${i.status}">${i.status}</span></td><td>${i.status==="open"?`<button class="btn sm" data-a="ret" data-id="${i.id}">Mark returned</button> `:""}<button class="btn bad sm" data-a="del" data-id="${i.id}">Delete</button></td></tr>`).join("")}</table></div>`;
+ const T=(k,l)=>`<button class="btn sm ${tab===k?"":"alt"}" data-tab="${k}">${l}</button>`;
+ app.innerHTML=`<div class="wrap"><h2>Admin dashboard <button class="btn alt sm" id="lo">Log out</button></h2>
+ <div class="stats" style="margin-top:0"><div class="stat"><b>${it.length}</b><span>Total items</span></div><div class="stat"><b>${pend.length}</b><span>Pending review</span></div><div class="stat"><b>${cl.filter(c=>c.status==="new").length}</b><span>New claims</span></div><div class="stat"><b>${it.filter(i=>i.status==="returned").length}</b><span>Returned</span></div></div>
+ <div class="tabs">${T("pending","Pending reports ("+pend.length+")")}${T("claims","Claims ("+cl.length+")")}${T("all","All items")}</div><div class="panel">${body}</div></div>`;
+ $("#lo").onclick=()=>{S.admin=false;save();admin()};
+ app.querySelectorAll("[data-tab]").forEach(b=>b.onclick=()=>{tab=b.dataset.tab;admin()});
+ app.querySelectorAll("[data-a]").forEach(b=>b.onclick=()=>{const id=+b.dataset.id,a=b.dataset.a;
+  if(a==="ap"){S.items.find(i=>i.id===id).status="open";toast("Approved")}
+  if(a==="del"){S.items=S.items.filter(i=>i.id!==id);S.claims=S.claims.filter(c=>c.itemId!==id);toast("Deleted")}
+  if(a==="ret"){S.items.find(i=>i.id===id).status="returned";toast("Marked returned")}
+  if(a==="ca"){const c=S.claims.find(c=>c.id===id);c.status="approved";const x=S.items.find(i=>i.id===c.itemId);if(x)x.status="returned";toast("Claim approved")}
+  if(a==="cr"){S.claims.find(c=>c.id===id).status="rejected";toast("Claim rejected")}
+  save();admin()});
+}
+
+function route(){
+ const h=(location.hash||"#home").slice(1),m=h.match(/^(item|claim)-(\d+)$/),r=m?m[1]:h;
+ document.querySelectorAll("#nav a").forEach(a=>a.classList.toggle("on",a.dataset.r===(r==="item"||r==="claim"?"items":r)));
+ try{({home,items,report,admin}[r]||(m?(m[1]==="item"?()=>detail(+m[2]):()=>claim(+m[2])):home))()}catch(e){app.innerHTML='<div class="wrap empty">Something went wrong. <a href="#home"><u>Go home</u></a></div>'}
+ window.scrollTo(0,0);
+}
+addEventListener("hashchange",route);route();
+</script></body></html>
